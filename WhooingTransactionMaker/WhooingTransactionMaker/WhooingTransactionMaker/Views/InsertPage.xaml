@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:WhooingTransactionMaker.ViewModels"
+             x:Class="WhooingTransactionMaker.Views.InsertPage"
+             SubmitTransaction="{Binding SubmitTransactionCommand}"
+             >
+
+    <ContentPage.BindingContext>
+        <vm:InsertPageViewModel/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="200" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="200" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="6*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label x:Name="ItemDate" Text="ItemDate" Grid.Column="0" />
+                    <Entry x:Name="ItemPrice" Text="0" Grid.Column="1" Keyboard="Numeric"/>
+                </Grid>
+                                
+                <Entry x:Name="ItemDesc" Placeholder="Insert a description"/>
+                <StackLayout x:Name="ItemDescs" Orientation="Horizontal"/>
+            </StackLayout>
+
+            <ListView x:Name="LeftCategory" Grid.Row="1" Grid.Column="0"/>
+            <ListView x:Name="RightCategory" Grid.Row="1" Grid.Column="1"/>
+
+            <Button x:Name="Submit" 
+                    Text="Submit" 
+                    Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                    Clicked="SubmitClicked"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
