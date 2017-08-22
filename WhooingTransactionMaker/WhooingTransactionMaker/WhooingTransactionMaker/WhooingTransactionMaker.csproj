@@ -38,24 +38,40 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataModels\AccountData.cs" />
+    <Compile Include="DataModels\Accounts.cs" />
+    <Compile Include="DataModels\Entries.cs" />
+    <Compile Include="DataModels\EntryData.cs" />
+    <Compile Include="DataModels\InvokeResult.cs" />
+    <Compile Include="DataModels\SectionData.cs" />
+    <Compile Include="DataModels\UserData.cs" />
     <Compile Include="Helpers\ISubsystemUtils.cs" />
+    <Compile Include="Helpers\StringUtils.cs" />
     <Compile Include="Helpers\MessengingCenterAlert.cs" />
     <Compile Include="Helpers\ObservableObject.cs" />
     <Compile Include="Helpers\ObservableRangeCollection.cs" />
     <Compile Include="Helpers\SubsystemUtils.cs" />
-    <Compile Include="Models\Auth.cs" />
+    <Compile Include="Models\AccountProvider.cs" />
+    <Compile Include="Models\AuthProvider.cs" />
     <Compile Include="Models\BaseDataObject.cs" />
+    <Compile Include="Models\EntryProvider.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\RESTInvoker.cs" />
+    <Compile Include="Models\SectionProvider.cs" />
     <Compile Include="Models\Transaction.cs" />
+    <Compile Include="Models\UserProvider.cs" />
     <Compile Include="Models\Whooing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IDataStore.cs" />
     <Compile Include="Services\MockDataStore.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\EntryListPageViewModel.cs" />
     <Compile Include="ViewModels\InsertPageViewModel.cs" />
     <Compile Include="ViewModels\ItemDetailViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />
+    <Compile Include="Views\EntryListPage.xaml.cs">
+      <DependentUpon>EntryListPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\InsertPage.xaml.cs">
       <DependentUpon>InsertPage.xaml</DependentUpon>
     </Compile>
@@ -125,6 +141,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\SplashPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\EntryListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

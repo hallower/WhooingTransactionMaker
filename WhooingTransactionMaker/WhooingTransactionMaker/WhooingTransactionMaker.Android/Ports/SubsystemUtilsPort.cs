@@ -9,15 +9,18 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using WhooingTransactionMaker.Droid.Ports;
 using WhooingTransactionMaker.Helpers;
 using Android.Util;
 
-[assembly: Xamarin.Forms.Dependency(typeof(ISubsystemUtils))]
+[assembly: Xamarin.Forms.Dependency(typeof(SubsystemUtilsPort))]
 namespace WhooingTransactionMaker.Droid.Ports
 {
     public class SubsystemUtilsPort : ISubsystemUtils
     {
         private static string TAG = "csk";
+
+        public SubsystemUtilsPort() { }
 
         public void Dbg(string message)
         {
@@ -38,7 +41,16 @@ namespace WhooingTransactionMaker.Droid.Ports
 
             byte[] keyBytes = Encoding.UTF8.GetBytes(key);
             var sha1 = System.Security.Cryptography.SHA1.Create();
-            return sha1.ComputeHash(keyBytes).ToString();
+            byte[] hash = sha1.ComputeHash(keyBytes);
+
+            string result = string.Empty;
+            foreach (var b in hash)
+            {
+                int tmp = (b & 0xff) + 0x100;
+                result += tmp.ToString("x").Substring(1);
+            }
+            //return Encoding.UTF8.GetString(hash);
+            return result;
         }
 
         public void TerminateApp()

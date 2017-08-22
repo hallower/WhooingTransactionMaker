@@ -18,25 +18,22 @@ namespace WhooingTransactionMaker.Models
         AuthFailed,
     }
 
-    public sealed class Auth
+    public sealed class AuthProvider
     {
-        private static readonly Lazy<Auth> lazy = new Lazy<Auth>(() => new Auth());
+        private static readonly string appID = "226";
+        private static readonly string alkjdflkasdf = "cfd493a5175df115e33a50d4fedaeae0809532b1";
+
+        private static readonly string urlReqeustToken = "/app_auth/request_token";
+        private static readonly string urlGetAccessToken = "/app_auth/access_token";
 
         private Int64 sequence;
-        private string appID = "226";
-        private string alkjdflkasdf = "cfd493a5175df115e33a50d4fedaeae0809532b1";
         private string tmpToken;
         private string accessToken;
         private string accessTokenS;
 
-        private string urlReqeustToken = "/app_auth/request_token";
-        private string urlGetAccessToken = "/app_auth/access_token";
-
         public AuthStatus Status { get; private set; }
 
-        public static Auth Instance { get { return lazy.Value; } }
-
-        private Auth()
+        public AuthProvider()
         {
             Status = AuthStatus.NoAuth;
         }
@@ -45,8 +42,8 @@ namespace WhooingTransactionMaker.Models
         {
             Status = AuthStatus.Authenticating;
 
-            var uri = Whooing.BaseUrl + urlReqeustToken + "?app_id=" + appID + "&app_secret=" + alkjdflkasdf;
-            var result = await RESTInvoker.Invoke(RestMethod.GET, uri, string.Empty);
+            var uri = urlReqeustToken + "?app_id=" + appID + "&app_secret=" + alkjdflkasdf;
+            var result = await RESTInvoker.Invoke(RestMethod.GET, uri);
 
             if (result["token"] == null)
             {
@@ -62,8 +59,8 @@ namespace WhooingTransactionMaker.Models
         {
             Status = AuthStatus.Authenticating;
 
-            var uri = Whooing.BaseUrl + urlGetAccessToken + "?app_id=" + appID + "&app_secret=" + alkjdflkasdf + "&token=" + tmpToken + "&pin=" + pin;
-            var result = await RESTInvoker.Invoke(RestMethod.GET, uri, string.Empty);
+            var uri = urlGetAccessToken + "?app_id=" + appID + "&app_secret=" + alkjdflkasdf + "&token=" + tmpToken + "&pin=" + pin;
+            var result = await RESTInvoker.Invoke(RestMethod.GET, uri);
 
             if (result["token"] == null)
             {
@@ -87,7 +84,7 @@ namespace WhooingTransactionMaker.Models
             if (Status != AuthStatus.AuthSuccess)
             {
                 SubsystemUtils.Instance.Err("Login is required to make XAPI key!!!");
-                return string.Empty;
+                return null;
             }
 
             string key = "app_id=";
@@ -99,7 +96,7 @@ namespace WhooingTransactionMaker.Models
             key += ",nounce=";
             key += (sequence++);
             key += ",timestamp=";
-            key += DateTime.Today.Millisecond;
+            key += Math.Round((DateTime.Now - DateTime.MinValue).TotalSeconds);
 
             key += ",signiture=";
             key += SubsystemUtils.Instance.GetSHA1Hash(alkjdflkasdf + '|' + accessTokenS);

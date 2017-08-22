@@ -7,11 +7,16 @@ using WhooingTransactionMaker.UWP.Ports;
 using WhooingTransactionMaker.Helpers;
 using Windows.UI.Xaml;
 
-[assembly: Xamarin.Forms.Dependency(typeof(ISubsystemUtils))]
+[assembly: Xamarin.Forms.Dependency(typeof(SubsystemUtilsPort))]
 namespace WhooingTransactionMaker.UWP.Ports
 {
     public class SubsystemUtilsPort : ISubsystemUtils
     {
+        public SubsystemUtilsPort()
+        {
+
+        }
+
         public string GetSHA1Hash(string key)
         {
             if (key.Length < 1)
@@ -21,7 +26,16 @@ namespace WhooingTransactionMaker.UWP.Ports
 
             byte[] keyBytes = Encoding.UTF8.GetBytes(key);
             var sha1 = System.Security.Cryptography.SHA1.Create();
-            return sha1.ComputeHash(keyBytes).ToString();
+            byte[] hash = sha1.ComputeHash(keyBytes);
+
+            string result = string.Empty;
+            foreach(var b in hash)
+            {
+                int tmp = (b & 0xff) + 0x100;
+                result += tmp.ToString("x").Substring(1);
+            }
+            //return Encoding.UTF8.GetString(hash);
+            return result;
         }
 
         public void Dbg(string message)

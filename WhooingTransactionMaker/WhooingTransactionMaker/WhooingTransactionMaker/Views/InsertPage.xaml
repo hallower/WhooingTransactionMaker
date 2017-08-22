@@ -14,8 +14,8 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="200" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="200" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="100" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -33,12 +33,14 @@
                     <Entry x:Name="ItemPrice" Text="0" Grid.Column="1" Keyboard="Numeric"/>
                 </Grid>
                                 
-                <Entry x:Name="ItemDesc" Placeholder="Insert a description"/>
+                <Entry x:Name="ItemDesc" Text="" Placeholder="Insert a description"/>
                 <StackLayout x:Name="ItemDescs" Orientation="Horizontal"/>
             </StackLayout>
 
-            <ListView x:Name="LeftCategory" Grid.Row="1" Grid.Column="0"/>
-            <ListView x:Name="RightCategory" Grid.Row="1" Grid.Column="1"/>
+            <ListView x:Name="LeftCategory" 
+                      ItemsSource="{Binding LeftCategories}" Grid.Row="1" Grid.Column="0"/>
+            <ListView x:Name="RightCategory"
+                      ItemsSource="{Binding RightCategories}" Grid.Row="1" Grid.Column="1"/>
 
             <Button x:Name="Submit" 
                     Text="Submit" 

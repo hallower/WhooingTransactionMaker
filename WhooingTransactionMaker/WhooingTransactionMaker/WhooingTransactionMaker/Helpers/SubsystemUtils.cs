@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ using Xamarin.Forms;
 
 namespace WhooingTransactionMaker.Helpers
 {
-    public class SubsystemUtils : ISubsystemUtils
+    public sealed class SubsystemUtils : ISubsystemUtils
     {
         private static readonly Lazy<SubsystemUtils> lazy =
             new Lazy<SubsystemUtils>(() => new SubsystemUtils());
@@ -24,22 +25,27 @@ namespace WhooingTransactionMaker.Helpers
             }
 
             public void Dbg(string message) { }
-
-            public void Err(string message) { }
-            
+            public void Err(string message) { }            
             public void Toast(string message) { }
             public void TerminateApp() { }
-
         }
 
         private SubsystemUtils()
         {
-            if (DependencyService.Get<ISubsystemUtils>() != null)
+            try
             {
-                systemUtils = DependencyService.Get<ISubsystemUtils>();
+                if (DependencyService.Get<ISubsystemUtils>() != null)
+                {
+                    systemUtils = DependencyService.Get<ISubsystemUtils>();
+                }
+                else
+                {
+                    systemUtils = new DefaultSubsystemUtils();
+                }
             }
-            else
+            catch(Exception e)
             {
+                Debug.WriteLine("Oops DefaultSubsystemUtils initiation failed, " + e.Message);
                 systemUtils = new DefaultSubsystemUtils();
             }
         }

@@ -5,14 +5,21 @@
     <ContentPage.Content>
         <RelativeLayout>
 
-            <WebView x:Name="LoginView" 
+            <ScrollView RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width,Factor=0.15,Constant=0}"
+                        RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=0.15,Constant=0}"
+                        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7,Constant=0}"
+                        RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=0.7,Constant=0}">
+                <WebView x:Name="LoginView"
                      IsVisible="False"
-                     Navigating="WebViewNavigating"
-                     RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=.15,Constant=0}"
-                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=.8,Constant=0}"
-                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=.8,Constant=0}"/>
+                     Navigating="WebViewNavigating"/>
+            </ScrollView>
 
-            <Label x:Name="LoadingStatus" Text="Loading" />
+            <Label RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=.9,Constant=0}"
+                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
+                   RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=.1,Constant=0}"
+                   x:Name="LoadingStatus" 
+                   HorizontalTextAlignment="Center"
+                   Text="Loading" />
         </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

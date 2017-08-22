@@ -18,22 +18,12 @@ namespace WhooingTransactionMaker.Views
         {
             InitializeComponent();
 
-            test();
+            LoginToWhooing();
         }
 
-        public async void test()
+        public async void LoginToWhooing()
         {
-            string token = await Auth.Instance.GetToken();
-            if (token.Length < 0)
-            {
-                // TODO : log
-                return;
-
-            }
-
-            Debug.WriteLine("token = " + token);
-
-            LoginView.Source = "https://whooing.com/app_auth/authorize?token=" + token;
+            LoginView.Source = await Whooing.Instance.GetLoginUrl();
             LoginView.IsVisible = true;
         }
 
@@ -59,7 +49,7 @@ namespace WhooingTransactionMaker.Views
                 }
 
 #pragma warning disable CS4014
-                DoLogin(pinNumber);
+                PostLoginProcess(pinNumber);
 #pragma warning restore CS4014
             }
             else if (e.Url.Contains("logout"))
@@ -69,11 +59,9 @@ namespace WhooingTransactionMaker.Views
 
         }
 
-        private async Task DoLogin(string pinNumber)
+        private async Task PostLoginProcess(string pinNumber)
         {
-            var userID = await Auth.Instance.GetAccessToken(pinNumber);
-
-            if (Auth.Instance.Status != AuthStatus.AuthSuccess)
+            if (await Whooing.Instance.DoLoginProcess(pinNumber) == false)
             {
                 SubsystemUtils.Instance.Toast("Login is failed due to invalid account information, Please login again.");
                 SubsystemUtils.Instance.TerminateApp();
@@ -87,6 +75,11 @@ namespace WhooingTransactionMaker.Views
                         new InsertPage()
                         {
                             Title = "Insert",
+                            Icon = Device.OnPlatform("tab_feed.png",null,null)
+                        },
+                        new EntryListPage()
+                        {
+                            Title = "List",
                             Icon = Device.OnPlatform("tab_feed.png",null,null)
                         },
                         new NavigationPage(new ItemsPage())
